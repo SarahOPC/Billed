@@ -61,3 +61,25 @@ textarea:focus, input:focus, select:focus {
 *[placeholder] {
   color: #0E5AE5 !important;
 }
+
+.modalError {
+  display: flex;
+  position: absolute;
+  top: 20em;
+  right: 29em;
+  bottom: 0em;
+  left: 37em;
+  border: 0.4em solid #0E5AE5;
+  height: fit-content;
+}
+
+.modalError .modal-content p {
+  text-align: center;
+  font-weight: 600;
+}
+
+.modalError .modal-content .closeSpan {
+  cursor: pointer;
+  width: 2em;
+  align-self: end;
+}

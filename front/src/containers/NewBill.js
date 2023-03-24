@@ -18,6 +18,11 @@ export default class NewBill {
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const fileExtension = file.name.split(".")[1];
+    if(fileExtension !== "png" && fileExtension !== "jpg" && fileExtension !== "jpeg") {
+      displayErrorMessage();
+      return;
+    }
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
@@ -73,4 +78,28 @@ export default class NewBill {
       .catch(error => console.error(error))
     }
   }
+}
+
+function displayErrorMessage() {
+  const divModal = document.createElement( 'div' );
+  divModal.setAttribute("class", "modalError");
+  divModal.setAttribute("id", "myModal");
+  const divContent = document.createElement( 'div' );
+  divContent.setAttribute("class", "modal-content");
+  const closeSpan = document.createElement( 'img' );
+  closeSpan.setAttribute("class", "closeSpan");
+  closeSpan.setAttribute("src", "https://img.icons8.com/pulsar-line/48/000000/cancel.png");
+  closeSpan.setAttribute("alt", "closeButton");
+  closeSpan.addEventListener('click', function() {
+    divModal.style.display = 'none';
+    const form = document.querySelectorAll(".form-control.blue-border")[7];
+    form.value = '';
+  });
+  const pModal = document.createElement( 'p' );
+  pModal.textContent = "Vous devez obligatoirement founir une fichier avec l'une des extensions suivantes : .png, .jpg ou .jpeg";
+  divContent.appendChild(closeSpan);
+  divContent.appendChild(pModal);
+  divModal.appendChild(divContent);
+  const container = document.querySelector(".content");
+  container.appendChild(divModal);
 }
