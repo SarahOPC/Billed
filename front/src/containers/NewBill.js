@@ -15,6 +15,9 @@ export default class NewBill {
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
   }
+
+  //----------------------------------------Correction bug #3 by checking extensions----------------------
+
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
@@ -79,6 +82,8 @@ export default class NewBill {
     }
   }
 }
+
+//----------------------------------------Correction bug #3 by checking extensions----------------------
 
 function displayErrorMessage() {
   const divModal = document.createElement( 'div' );
