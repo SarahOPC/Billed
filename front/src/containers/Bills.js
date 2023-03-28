@@ -1,5 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatDate, formatStatus } from "../app/format.js"
+import { formatDate, formatStatus, antiChrono } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class {
@@ -27,6 +27,8 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
+//----------------------------------------Correction bug #1 by ordering bills antichronogically----------------------
+
   getBills = () => {
     if (this.store) {
       return this.store
@@ -39,7 +41,7 @@ export default class {
               return {
                 ...doc,
                 date: formatDate(doc.date),
-                status: formatStatus(doc.status)
+                status: formatStatus(doc.status),
               }
             } catch(e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
@@ -52,8 +54,8 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
-        return bills
+          .sort(antiChrono);
+          return bills;
       })
     }
   }

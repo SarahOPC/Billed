@@ -27,3 +27,5 @@ export const formatStatus = (status) => {
       return "Refused"
   }
 }
+
+export const antiChrono = (a, b) => ((a.date < b.date) ? 1 : -1);
