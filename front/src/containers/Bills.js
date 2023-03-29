@@ -36,7 +36,7 @@ export default class {
       .list()
       .then(snapshot => {
         const bills = snapshot
-          .map(doc => {
+        .map(doc => {
             try {
               return {
                 ...doc,

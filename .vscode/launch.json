@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Jest Tests",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "C:/Users/Richa/Desktop/OPC/Ft JS React/P9_Raguin_Sarah/Débuggez_et_testez_un_SaaS_RH_raguin_sarah/bill-app/front/node_modules/jest/bin/jest.js",
+          "--runInBand"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      }
+    ]
+  }
