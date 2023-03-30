@@ -91,18 +91,18 @@ function displayErrorMessage() {
   divModal.setAttribute("id", "myModal");
   const divContent = document.createElement( 'div' );
   divContent.setAttribute("class", "modal-content");
-  const closeSpan = document.createElement( 'img' );
-  closeSpan.setAttribute("class", "closeSpan");
-  closeSpan.setAttribute("src", "https://img.icons8.com/pulsar-line/48/000000/cancel.png");
-  closeSpan.setAttribute("alt", "closeButton");
-  closeSpan.addEventListener('click', function() {
+  const closeModal = document.createElement( 'img' );
+  closeModal.setAttribute("class", "closeModal");
+  closeModal.setAttribute("src", "https://img.icons8.com/pulsar-line/48/000000/cancel.png");
+  closeModal.setAttribute("alt", "closeButton");
+  closeModal.addEventListener('click', function() {
     divModal.style.display = 'none';
     const form = document.querySelectorAll(".form-control.blue-border")[7];
     form.value = '';
   });
   const pModal = document.createElement( 'p' );
   pModal.textContent = "Vous devez obligatoirement founir une fichier avec l'une des extensions suivantes : .png, .jpg ou .jpeg";
-  divContent.appendChild(closeSpan);
+  divContent.appendChild(closeModal);
   divContent.appendChild(pModal);
   divModal.appendChild(divContent);
   const container = document.querySelector(".content");
