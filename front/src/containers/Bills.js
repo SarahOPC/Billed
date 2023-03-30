@@ -35,6 +35,7 @@ export default class {
       .bills()
       .list()
       .then(snapshot => {
+        snapshot.sort(antiChrono)
         const bills = snapshot
         .map(doc => {
             try {
@@ -54,7 +55,6 @@ export default class {
               }
             }
           })
-          .sort(antiChrono);
           return bills;
       })
     }
