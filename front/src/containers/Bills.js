@@ -27,7 +27,7 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
-//----------------------------------------Correction bug #1 by ordering bills antichronogically----------------------
+//----------------------------------------Correction bug #1 by ordering bills antichronogically----------------------------------------
 
   getBills = () => {
     if (this.store) {

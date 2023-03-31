@@ -37,7 +37,7 @@ export default class Login {
 
   }
 
-//----------------------------------------Correction bug #2 by changing employee by admin----------------------
+//----------------------------------------Correction bug #2 by changing employee by admin----------------------------------------
 
   handleSubmitAdmin = e => {
     e.preventDefault()

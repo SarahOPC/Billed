@@ -25,13 +25,13 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId('icon-window'))
       const windowIcon = screen.getByTestId('icon-window')
       //to-do write expect expression
-      //----------------------------------------Adding 2 expect to check if element is identical and has a certain class highlighted----------------------
+      //----------------------------------------Adding 2 expect to check if element is identical and has a certain class highlighted----------------------------------------
 
       expect (screen.getByTestId('icon-window')).toEqual(windowIcon);
       expect (screen.getByTestId('icon-window')).toHaveClass('active-icon');
     })
 
-//----------------------------------------Correction bug #1 by ordering dates antichronogically----------------------
+//----------------------------------------Correction bug #1 by ordering dates antichronogically----------------------------------------
     
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
@@ -42,3 +42,6 @@ describe("Given I am connected as an employee", () => {
     })
   })
 })
+
+//----------------------------------------Unit test Containers/Bills----------------------------------------
+

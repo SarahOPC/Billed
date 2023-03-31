@@ -85,7 +85,7 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
-//----------------------------------------Correction bug #4 by commented lines looking if two bills are selected----------------------
+//----------------------------------------Correction bug #4 by commented lines looking if two bills are selected----------------------------------------
 
   handleEditTicket(e, bill, bills) {
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
@@ -132,7 +132,7 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
-//----------------------------------------Correction bug #4 by commented lines looking if two bills are selected----------------------
+//----------------------------------------Correction bug #4 by commented lines looking if two bills are selected----------------------------------------
 
   handleShowTickets(e, bills, index) {
     if (this.counter === undefined || this.index !== index) this.counter = 0

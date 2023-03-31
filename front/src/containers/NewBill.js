@@ -16,7 +16,7 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
 
-  //----------------------------------------Correction bug #3 by checking extensions----------------------
+  //----------------------------------------Correction bug #3 by checking extensions----------------------------------------
 
   handleChangeFile = e => {
     e.preventDefault()
@@ -83,7 +83,7 @@ export default class NewBill {
   }
 }
 
-//----------------------------------------Correction bug #3 by checking extensions----------------------
+//----------------------------------------Correction bug #3 by checking extensions----------------------------------------
 
 function displayErrorMessage() {
   const divModal = document.createElement( 'div' );

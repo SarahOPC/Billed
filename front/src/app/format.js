@@ -7,7 +7,7 @@
   return `${parseInt(da)} ${month.substr(0,3)}. ${ye.toString().substr(2,4)}`
 } */
 
-//----------------------------------------Correction bug #1 by changing the date format returned----------------------
+//----------------------------------------Correction bug #1 by changing the date format returned----------------------------------------
 
 export const formatDate = (dateStr) => {
   const date = new Date(dateStr)
