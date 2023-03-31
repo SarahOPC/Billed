@@ -95,6 +95,8 @@ describe('handleClickIconEye Unit Test Suites', () => {
 
 //----------------------------------------Integration test Containers/Bills----------------------------------------
 
+//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+
 describe("Given I am connected as an employee", () => {
   describe("When I click on 'Nouvelle note de frais'", () => {
     test("Then it should navigate to a new page with a form to complete", () => {
@@ -108,7 +110,7 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-  describe("When I am on bills page'", () => {
+  describe("When I am on bills page", () => {
     test("Then I should see all my previous bills in antichronogical order", () => {
 
     })
