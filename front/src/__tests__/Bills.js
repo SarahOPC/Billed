@@ -7,7 +7,9 @@ import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-
+import {getBills} from "../containers/Bills.js";
+import {handleClickNewBill} from "../containers/Bills.js";
+import {handleClickIconEye} from "../containers/Bills.js";
 import router from "../app/Router.js";
 
 describe("Given I am connected as an employee", () => {
