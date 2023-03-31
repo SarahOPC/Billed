@@ -45,3 +45,72 @@ describe("Given I am connected as an employee", () => {
 
 //----------------------------------------Unit test Containers/Bills----------------------------------------
 
+/**
+ * @ function getBills
+ */
+
+describe('getBills Unit Test Suites', () => {
+  it ('should return an array of bills with formated dates', () => (
+    expect(getBills().toBeDefined)
+  ))
+
+  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+  it ('should return an error', () => (
+    expect(getBills("foo").toThrow(e))
+  ))
+
+  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+  it ('should return an array of bills with non formated dates', () => (
+    expect(getBills("corruptedData").toBeDefined)
+  ))
+})
+
+/**
+ * @ function handleClickNewBill
+ */
+
+//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+describe('handleClickNewBill Unit Test Suites', () => {
+  it ('should change the url of the page', () => (
+    expect(currentUrl.toBeFalsy)
+  ))
+})
+
+/**
+ * @ function handleClickIconEye
+ */
+
+describe('handleClickIconEye Unit Test Suites', () => {
+
+  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+  it ('should return the bill url', () => (
+    expect(billUrl.toBeDefined)
+  ))
+
+  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+  it ('should define a width for the image', () => (
+    expect(widthImage.toBeDefined)
+  ))
+})
+
+//----------------------------------------Integration test Containers/Bills----------------------------------------
+
+describe("Given I am connected as an employee", () => {
+  describe("When I click on 'Nouvelle note de frais'", () => {
+    test("Then it should navigate to a new page with a form to complete", () => {
+
+    })
+  })
+
+  describe("When I click on a blus eye icon", () => {
+    test("Then it should display amodal showing the current bill", () => {
+
+    })
+  })
+
+  describe("When I am on bills page'", () => {
+    test("Then I should see all my previous bills in antichronogical order", () => {
+
+    })
+  })
+})
