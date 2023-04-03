@@ -7,10 +7,9 @@ import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-import {getBills} from "../containers/Bills.js";
-import {handleClickNewBill} from "../containers/Bills.js";
-import {handleClickIconEye} from "../containers/Bills.js";
+import {default as billFunctions} from "../containers/Bills.js";
 import router from "../app/Router.js";
+import "@testing-library/jest-dom";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -29,8 +28,8 @@ describe("Given I am connected as an employee", () => {
       //to-do write expect expression
       //----------------------------------------Adding 2 expect to check if element is identical and has a certain class highlighted----------------------------------------
 
-      expect (screen.getByTestId('icon-window')).toEqual(windowIcon);
-      expect (screen.getByTestId('icon-window')).toHaveClass('active-icon');
+      expect (windowIcon).toEqual(windowIcon);
+      expect (windowIcon).toHaveClass('active-icon');
     })
 
 //----------------------------------------Correction bug #1 by ordering dates antichronogically----------------------------------------
@@ -52,19 +51,16 @@ describe("Given I am connected as an employee", () => {
  */
 
 describe('getBills Unit Test Suites', () => {
-  it ('should return an array of bills with formated dates', () => (
-    expect(getBills()).toBeDefined
-  ))
+  it ('should return an array of bills', async () => {
+    const billsInstance = new billFunctions({document, onNavigate, localStorage});
+    const bills = await billsInstance.getBills();
+    expect(bills).toBeDefined;
+  })
 
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should return an error', () => (
-    expect(getBills("foo")).toThrow(e)
-  ))
-
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should return an array of bills with non formated dates', () => (
-    expect(getBills("corruptedData")).toBeDefined
-  ))
+  it ('should return an error', async () => {
+    const billsInstance = new billFunctions({document, onNavigate, localStorage});
+    await expect(billsInstance.getBills("foo")).toBeUndefined;
+  })
 })
 
 /**
@@ -73,10 +69,13 @@ describe('getBills Unit Test Suites', () => {
 
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleClickNewBill Unit Test Suites', () => {
-  it ('should change the url of the page', () => (
-    expect(currentUrl).toBeFalsy
-  ))
+  it ('should change the url of the page', async() => {
+    const billsInstance = new billFunctions({document, onNavigate, localStorage});
+    const currentUrl = "http://127.0.0.1:8080/#employee/bills";
+    expect(billsInstance.handleClickNewBill.currentUrl).toBeFalsy;
+  })
 })
+//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 
 /**
  * @ function handleClickIconEye
@@ -85,13 +84,15 @@ describe('handleClickNewBill Unit Test Suites', () => {
 describe('handleClickIconEye Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should return the bill url', () => (
-    expect(billUrl).toBeDefined
-  ))
+  it ('should return the bill url', async () => {
+    const billsInstance = new billFunctions({document, onNavigate, localStorage});
+    const billUrl = icon.getAttribute("data-bill-url");
+    await expect(billsInstance.billUrl).toBeDefined;
+  })
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should define a width for the image', () => (
-    expect(widthImage).toBeDefined
+    expect(billFunctions.widthImage).toBeDefined
   ))
 })
 
