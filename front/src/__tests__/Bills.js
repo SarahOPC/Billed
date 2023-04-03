@@ -83,17 +83,16 @@ describe('handleClickNewBill Unit Test Suites', () => {
 
 describe('handleClickIconEye Unit Test Suites', () => {
 
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should return the bill url', async () => {
+  it ('should return a bill url', () => {
     const billsInstance = new billFunctions({document, onNavigate, localStorage});
-    const billUrl = icon.getAttribute("data-bill-url");
-    await expect(billsInstance.billUrl).toBeDefined;
+    expect(billsInstance.billUrl).toBeDefined;
   })
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should define a width for the image', () => (
-    expect(billFunctions.widthImage).toBeDefined
-  ))
+  it ('should define a width for the image', () => {
+    const billsInstance = new billFunctions({document, onNavigate, localStorage});
+    expect(billsInstance.widthImage).toBeDefined;
+  })
 })
 
 //----------------------------------------Integration test Containers/Bills----------------------------------------
