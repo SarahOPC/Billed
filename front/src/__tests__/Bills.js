@@ -53,17 +53,17 @@ describe("Given I am connected as an employee", () => {
 
 describe('getBills Unit Test Suites', () => {
   it ('should return an array of bills with formated dates', () => (
-    expect(getBills().toBeDefined)
+    expect(getBills()).toBeDefined
   ))
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should return an error', () => (
-    expect(getBills("foo").toThrow(e))
+    expect(getBills("foo")).toThrow(e)
   ))
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should return an array of bills with non formated dates', () => (
-    expect(getBills("corruptedData").toBeDefined)
+    expect(getBills("corruptedData")).toBeDefined
   ))
 })
 
@@ -74,7 +74,7 @@ describe('getBills Unit Test Suites', () => {
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleClickNewBill Unit Test Suites', () => {
   it ('should change the url of the page', () => (
-    expect(currentUrl.toBeFalsy)
+    expect(currentUrl).toBeFalsy
   ))
 })
 
@@ -86,12 +86,12 @@ describe('handleClickIconEye Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should return the bill url', () => (
-    expect(billUrl.toBeDefined)
+    expect(billUrl).toBeDefined
   ))
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should define a width for the image', () => (
-    expect(widthImage.toBeDefined)
+    expect(widthImage).toBeDefined
   ))
 })
 

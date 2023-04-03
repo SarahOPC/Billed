@@ -4,6 +4,7 @@
   },
   "jest": {
     "verbose": false,
+    "testEnvironmentOptions": { "url": "http://localhost" },
     "setupFiles": [
       "./setup-jest.js"
     ],

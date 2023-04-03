@@ -26,12 +26,12 @@ describe("Given I am connected as an employee", () => {
 describe('handleChangeFile Unit Test Suites', () => {
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should find a file extension', () => (
-    expect(handleChangeFile().fileExtension.toBeDefined)
+    expect(handleChangeFile()).fileExtension.toBeDefined
   ))
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should create and store a new bill', () => (
-    expect(handleChangeFile.create.data.toEqual(FormData))
+    expect(handleChangeFile.create.data).toEqual(FormData)
   ))
 })
 
@@ -42,12 +42,12 @@ describe('handleChangeFile Unit Test Suites', () => {
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleSubmit Unit Test Suites', () => {
   it ('should contain a bill with several values', () => (
-    expect(handleSumit.bill.toBeDefined)
+    expect(handleSumit.bill).toBeDefined
     ))
     
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should switch on bills page', () => (
-    expect(handleSumit.onNavigate.toBe("127.0.0.1:8080/#employee/bills"))
+    expect(handleSumit.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
   ))
 })
 
@@ -59,7 +59,7 @@ describe('displayErrorMessage Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should create a modal of error', () => (
-    expect(displayErrorMessage.container.toContain(divModal))
+    expect(displayErrorMessage.container).toContain(divModal)
   ))
 
 })
