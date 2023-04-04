@@ -67,15 +67,15 @@ describe('handleChangeFile Unit Test Suites', () => {
 
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleSubmit Unit Test Suites', () => {
-  it ('should contain a bill with several values', async() => {
-    const newBillInstance = new NewBill({document, localStorage});
+  it ('should contain a form with several input values', async() => {
+    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
     const newBill = await newBillInstance.handleSumit();
     expect(newBill.bill).toBeDefined;
   })
     
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should switch on bills page', async () => {
-    const newBillInstance = new NewBill({document, localStorage});
+    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
     const newBill = await newBillInstance.handleSumit();
     expect(newBill.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
   })
@@ -89,7 +89,7 @@ describe('displayErrorMessage Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should create a modal of error', async () => {
-    const newBillInstance = new NewBill({document, localStorage});
+    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
     const newBill = await newBillInstance.displayErrorMessage();
     expect(newBill.container).toContain(divModal);
   })
