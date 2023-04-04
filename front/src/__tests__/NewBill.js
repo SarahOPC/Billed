@@ -5,17 +5,22 @@
 import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
-import { fireEvent } from '@testing-library/dom';
+import { fireEvent } from '@testing-library/dom'
 
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
-    test("Then ...", () => {
+    test("Then I should see a form to complete", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
-      //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-      //to-do write assertion
-    })//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+      const formNewBill = document.getElementById('[data-testid="form-new-bill"]');
+      expect(formNewBill).toBeDefined();
+      expect(formNewBill.childElementCount).toBe(2);
+      const rowInForm = document.querySelectorAll('row');
+      rowInForm.forEach(row => {
+        expect(row.childElementCount.classList).toContain('col-md-6');
+      });
+    })
   })
 })
 
