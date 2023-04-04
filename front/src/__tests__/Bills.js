@@ -67,7 +67,6 @@ describe('getBills Unit Test Suites', () => {
  * @ function handleClickNewBill
  */
 
-//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleClickNewBill Unit Test Suites', () => {
   it ('should change the url of the page', async() => {
     const billsInstance = new billFunctions({document, onNavigate, localStorage});
@@ -75,7 +74,6 @@ describe('handleClickNewBill Unit Test Suites', () => {
     expect(billsInstance.handleClickNewBill.currentUrl).toBeFalsy;
   })
 })
-//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 
 /**
  * @ function handleClickIconEye
@@ -88,7 +86,6 @@ describe('handleClickIconEye Unit Test Suites', () => {
     expect(billsInstance.billUrl).toBeDefined;
   })
 
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should define a width for the image', () => {
     const billsInstance = new billFunctions({document, onNavigate, localStorage});
     expect(billsInstance.widthImage).toBeDefined;
@@ -97,24 +94,59 @@ describe('handleClickIconEye Unit Test Suites', () => {
 
 //----------------------------------------Integration test Containers/Bills----------------------------------------
 
-//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-
 describe("Given I am connected as an employee", () => {
-  describe("When I click on 'Nouvelle note de frais'", () => {
-    test("Then it should navigate to a new page with a form to complete", () => {
 
+  // Before running all the tests, we use a promise that resolves only when the page is fully loaded
+  // so we ensure that the tests will only run when the page is fully loaded
+  beforeAll(() => {
+    return new Promise((resolve) => {
+      window.onload = () => {
+        resolve();
+      }
     })
   })
 
-  describe("When I click on a blus eye icon", () => {
-    test("Then it should display amodal showing the current bill", () => {
+  describe("When I click on 'Nouvelle note de frais'", () => {
+    test("Then it should navigate to a new page with a form to complete", () => {
+      window.onload = () => { // Wrapping the code in window.onload to be sure the elements will be fully loaded before the test runs
+        const currentUrl = window.location.href;
+        const btnNewBill = document.getElementById('[data-testid="btn-new-bill"]');
+        btnNewBill.addEventListener("click", function() {
+          const newUrl = window.location.href;
+          expect(currentUrl).not.toBe(newUrl);
+        });
+        btnNewBill.click(); // Simulate a click on the button
+      }
+    })
+  })
 
+  describe("When I click on a blue eye icon", () => {
+    test("Then it should display a modal showing the current bill", () => {
+      window.onload = () => {
+        const blueEyeIcon = document.getElementById('[data-testid="icon-eye"]');
+        blueEyeIcon.addEventListener("click", function() {
+          const modal = document.getElementById('modalFile');
+          expect(modal.style.display).toBe("block");
+        });
+        blueEyeIcon.click(); // Simulate a click on the icon
+      }
     })
   })
 
   describe("When I am on bills page", () => {
     test("Then I should see all my previous bills in antichronogical order", () => {
-
+        window.onload= () => {
+        const dataBody = document.getElementById('[data-testid="tbody"]');
+        expect(dataBody.childElementCount).toBe(3);
+        
+        const trElements = dataBody.querySelectorAll('tr');
+        trElements.forEach(trElement => {
+          expect(trElement.childElementCount).toBe(6);
+        });
+        
+        const lastTrElement = trElements[trElements.length - 1];
+        expect(lastTrElement.classList).toContain('icon-actions');
+      }
     })
   })
 })
