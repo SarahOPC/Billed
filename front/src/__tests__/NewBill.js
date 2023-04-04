@@ -5,6 +5,7 @@
 import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
+import { fireEvent } from '@testing-library/dom';
 
 
 describe("Given I am connected as an employee", () => {
@@ -12,8 +13,9 @@ describe("Given I am connected as an employee", () => {
     test("Then ...", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
+      //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
       //to-do write assertion
-    })
+    })//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   })
 })
 
@@ -24,15 +26,39 @@ describe("Given I am connected as an employee", () => {
  */
 
 describe('handleChangeFile Unit Test Suites', () => {
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should find a file extension', () => (
-    expect(handleChangeFile()).fileExtension.toBeDefined
-  ))
 
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should create and store a new bill', () => (
-    expect(handleChangeFile.create.data).toEqual(FormData)
-  ))
+  beforeEach(() => {
+    const user = { "type":"Employee", "email":"employee@test.tld", "password":"employee", "status":"connected" };
+    localStorage.setItem("user", JSON.stringify(user));
+  })
+
+  it ('should display an error message for files with invalid extension', async () => {
+    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
+    const fileInput = newBillInstance.document.querySelector('input[dat-testid="file"]');
+    fireEvent.change(fileInput, {
+      target: {
+        files: [new File(['test file content'], 'test.txt', { type : 'text/plain' })]
+      }
+    });
+    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function to prevent the test to fail
+    await newBillInstance.handleChangeFile(event);
+    expect(displayErrorMessage).toHaveBeenCalled();
+  })
+
+  it ('should create a new bill for files with valid extensions', async () => {
+    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
+    const fileInput = newBillInstance.document.querySelector('input[data-testid="file"]');
+    fireEvent.change(fileInput, {
+      target: {
+        files: [new File(['test file content'], 'test.jpg', { type : 'image/jpeg' })]
+      }
+    });
+    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function to prevent the test to fail
+    const newBill = await newBillInstance.handleChangeFile(event);
+    expect(newBill.fileUrl).toBeDefined();
+    expect(newBill.billId).toBeDefined();
+    expect(newBill.fileName).toBeDefined();
+  })
 })
 
 /**
@@ -41,14 +67,18 @@ describe('handleChangeFile Unit Test Suites', () => {
 
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleSubmit Unit Test Suites', () => {
-  it ('should contain a bill with several values', () => (
-    expect(handleSumit.bill).toBeDefined
-    ))
+  it ('should contain a bill with several values', async() => {
+    const newBillInstance = new NewBill({document, localStorage});
+    const newBill = await newBillInstance.handleSumit();
+    expect(newBill.bill).toBeDefined;
+  })
     
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should switch on bills page', () => (
-    expect(handleSumit.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
-  ))
+  it ('should switch on bills page', async () => {
+    const newBillInstance = new NewBill({document, localStorage});
+    const newBill = await newBillInstance.handleSumit();
+    expect(newBill.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
+  })
 })
 
 /**
@@ -58,9 +88,11 @@ describe('handleSubmit Unit Test Suites', () => {
 describe('displayErrorMessage Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-  it ('should create a modal of error', () => (
-    expect(displayErrorMessage.container).toContain(divModal)
-  ))
+  it ('should create a modal of error', async () => {
+    const newBillInstance = new NewBill({document, localStorage});
+    const newBill = await newBillInstance.displayErrorMessage();
+    expect(newBill.container).toContain(divModal);
+  })
 
 })
 
