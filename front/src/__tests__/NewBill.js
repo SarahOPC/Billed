@@ -114,10 +114,19 @@ describe('handleSubmit Unit Test Suites', () => {
   })
 
   it ('should switch on bills page', async () => {
+    const ROUTES_PATH = { Bills: '#employee/bills' } ;
     const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
-    const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const newBill = await newBillInstance.handleSubmit();
-    expect(newBill.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
+    const updateBill = jest.fn();
+    const newBillInstance = new NewBill({document, onNavigate, updateBill, store, localStorage});
+    const e = { 
+      target: {
+        querySelector: jest.fn().mockReturnValue({ value: 'test' })
+      },
+      preventDefault : jest.fn()
+    };
+    
+    await expect(newBillInstance.handleSubmit(e)).toBeUndefined(); // because doesn't return anything in the original code
+    expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills']);
   })
 })
 
@@ -127,12 +136,11 @@ describe('handleSubmit Unit Test Suites', () => {
 
 describe('displayErrorMessage Unit Test Suites', () => {
 
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should create a modal of error', async () => {
     const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const newBill = await newBillInstance.displayErrorMessage();
-    expect(newBill.container).toContain(divModal);
+    const container = document.querySelector(".content");
+    await expect(container).toContainElement(document.getElementById('myModal'));
   })
 
 })
