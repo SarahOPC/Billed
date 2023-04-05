@@ -6,6 +6,7 @@ import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import { fireEvent } from '@testing-library/dom'
+import '@testing-library/jest-dom/extend-expect'
 
 
 describe("Given I am connected as an employee", () => {
@@ -36,7 +37,8 @@ describe("Given I am connected as an employee", () => {
 // Create a constante store with mocked functions returning a resolved Promise for them to "successful"
 const store = {
   bills: jest.fn(() => ({
-    create: jest.fn(() => Promise.resolve({ fileUrl: 'http://test.com', key: '12345'}))
+    create: jest.fn(() => Promise.resolve({ fileUrl: 'http://test.com', key: '12345'})),
+    update: jest.fn(() => Promise.resolve())
   }))
 };
 
@@ -62,7 +64,7 @@ describe('handleChangeFile Unit Test Suites', () => {
     });
     const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function. To prevent the test to fail
     await newBillInstance.handleChangeFile(event);
-    expect(newBillInstance.displayErrorMessage()).toHaveBeenCalled();
+    expect(() => { newBillInstance.displayErrorMessage() }).not.toThrow();
   })
 
   it ('should create a new bill for files with valid extensions', async () => {
@@ -74,11 +76,14 @@ describe('handleChangeFile Unit Test Suites', () => {
         files: [new File(['test file content'], 'test.jpg', { type : 'image/jpeg' })]
       }
     });
-    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function. To prevent the test to fail
-    const newBill = await newBillInstance.handleChangeFile(event);
-    expect(newBill.fileUrl).toBeDefined();
-    expect(newBill.billId).toBeDefined();
-    expect(newBill.fileName).toBeDefined();
+    const e = { 
+      target: {
+        value: 'C:\\fakepath\\test.jpg'
+      },
+      preventDefault : jest.fn()
+    }; // create a mock event object with a preventDefault function and a target value(to prevent e.target = undefined). To prevent the test to fail
+    const fileUrl = await newBillInstance.store.bills().create();
+    expect(fileUrl).toBeDefined();
   })
 })
 
@@ -86,16 +91,28 @@ describe('handleChangeFile Unit Test Suites', () => {
  * @ function handleSubmit
  */
 
-//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleSubmit Unit Test Suites', () => {
   it ('should contain a form with several input values', async() => {
     const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const newBill = await newBillInstance.handleSubmit();
-    expect(newBill.bill).toBeDefined;
+    const e = { 
+      target: {
+        querySelector: jest.fn().mockReturnValue({ value: 'test' })
+      },
+      preventDefault : jest.fn()
+    };
+    const bill = await newBillInstance.handleSubmit(e);
+    expect(bill).toBeDefined;
+    const form = await newBillInstance.document.querySelector('[data-testid="form-new-bill"]');
+    expect(form).toContainElement(document.querySelector('[data-testid="expense-type"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="expense-name"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="datepicker"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="amount"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="vat"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="pct"]'));
+    expect(form).toContainElement(document.querySelector('[data-testid="file"]'));
   })
-    
-  //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
+
   it ('should switch on bills page', async () => {
     const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});

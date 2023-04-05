@@ -17,13 +17,37 @@ export default class NewBill {
   }
 
   //----------------------------------------Correction bug #3 by checking extensions----------------------------------------
+  
+  displayErrorMessage() {
+    const divModal = document.createElement( 'div' );
+    divModal.setAttribute("class", "modalError");
+    divModal.setAttribute("id", "myModal");
+    const divContent = document.createElement( 'div' );
+    divContent.setAttribute("class", "modal-content");
+    const closeModal = document.createElement( 'img' );
+    closeModal.setAttribute("class", "closeModal");
+    closeModal.setAttribute("src", "https://img.icons8.com/pulsar-line/48/000000/cancel.png");
+    closeModal.setAttribute("alt", "closeButton");
+    closeModal.addEventListener('click', function() {
+      divModal.style.display = 'none';
+      const form = document.querySelectorAll(".form-control.blue-border")[7];
+      form.value = '';
+    });
+    const pModal = document.createElement( 'p' );
+    pModal.textContent = "Vous devez obligatoirement founir une fichier avec l'une des extensions suivantes : .png, .jpg ou .jpeg";
+    divContent.appendChild(closeModal);
+    divContent.appendChild(pModal);
+    divModal.appendChild(divContent);
+    const container = document.querySelector(".content");
+    container.appendChild(divModal);
+  }
 
   handleChangeFile = e => {
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const fileExtension = file.name.split(".")[1];
     if(fileExtension !== "png" && fileExtension !== "jpg" && fileExtension !== "jpeg") {
-      displayErrorMessage();
+      this.displayErrorMessage();
       return;
     }
     const filePath = e.target.value.split(/\\/g)
@@ -50,7 +74,6 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,
@@ -81,30 +104,4 @@ export default class NewBill {
       .catch(error => console.error(error))
     }
   }
-}
-
-//----------------------------------------Correction bug #3 by checking extensions----------------------------------------
-
-function displayErrorMessage() {
-  const divModal = document.createElement( 'div' );
-  divModal.setAttribute("class", "modalError");
-  divModal.setAttribute("id", "myModal");
-  const divContent = document.createElement( 'div' );
-  divContent.setAttribute("class", "modal-content");
-  const closeModal = document.createElement( 'img' );
-  closeModal.setAttribute("class", "closeModal");
-  closeModal.setAttribute("src", "https://img.icons8.com/pulsar-line/48/000000/cancel.png");
-  closeModal.setAttribute("alt", "closeButton");
-  closeModal.addEventListener('click', function() {
-    divModal.style.display = 'none';
-    const form = document.querySelectorAll(".form-control.blue-border")[7];
-    form.value = '';
-  });
-  const pModal = document.createElement( 'p' );
-  pModal.textContent = "Vous devez obligatoirement founir une fichier avec l'une des extensions suivantes : .png, .jpg ou .jpeg";
-  divContent.appendChild(closeModal);
-  divContent.appendChild(pModal);
-  divModal.appendChild(divContent);
-  const container = document.querySelector(".content");
-  container.appendChild(divModal);
 }
