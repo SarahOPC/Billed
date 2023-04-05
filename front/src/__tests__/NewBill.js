@@ -14,7 +14,6 @@ describe("Given I am connected as an employee", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
       const formNewBill = document.querySelector('[data-testid="form-new-bill"]');
-      console.log(formNewBill);
       expect(formNewBill).toBeDefined();
       expect(formNewBill.childElementCount).toBe(2);
       const rowInForm = document.querySelectorAll('row');
@@ -22,10 +21,24 @@ describe("Given I am connected as an employee", () => {
         expect(row.childElementCount.classList).toContain('col-md-6');
       });
     })
+
+    test("Then I should see a submit button", () => {
+      const html = NewBillUI();
+      document.body.innerHTML = html;
+      const submitButton = document.getElementById("btn-send-bill");
+      expect(submitButton).toBeDefined();
+    });
   })
 })
 
 //----------------------------------------Unit test Containers/NewBill----------------------------------------
+
+// Create a constante store with mocked functions returning a resolved Promise for them to "successful"
+const store = {
+  bills: jest.fn(() => ({
+    create: jest.fn(() => Promise.resolve({ fileUrl: 'http://test.com', key: '12345'}))
+  }))
+};
 
 /**
  * @ function handleChangeFile
@@ -37,10 +50,11 @@ describe('handleChangeFile Unit Test Suites', () => {
     const user = { "type":"Employee", "email":"employee@test.tld", "password":"employee", "status":"connected" };
     localStorage.setItem("user", JSON.stringify(user));
   })
-
+  
   it ('should display an error message for files with invalid extension', async () => {
+    const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const fileInput = newBillInstance.document.querySelector('input[dat-testid="file"]');
+    const fileInput = newBillInstance.document.querySelector('input[data-testid="file"]');
     fireEvent.change(fileInput, {
       target: {
         files: [new File(['test file content'], 'test.txt', { type : 'text/plain' })]
@@ -48,10 +62,11 @@ describe('handleChangeFile Unit Test Suites', () => {
     });
     const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function. To prevent the test to fail
     await newBillInstance.handleChangeFile(event);
-    expect(displayErrorMessage).toHaveBeenCalled();
+    expect(newBillInstance.displayErrorMessage()).toHaveBeenCalled();
   })
 
   it ('should create a new bill for files with valid extensions', async () => {
+    const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
     const fileInput = newBillInstance.document.querySelector('input[data-testid="file"]');
     fireEvent.change(fileInput, {
@@ -74,15 +89,17 @@ describe('handleChangeFile Unit Test Suites', () => {
 //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
 describe('handleSubmit Unit Test Suites', () => {
   it ('should contain a form with several input values', async() => {
+    const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const newBill = await newBillInstance.handleSumit();
+    const newBill = await newBillInstance.handleSubmit();
     expect(newBill.bill).toBeDefined;
   })
     
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should switch on bills page', async () => {
+    const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
-    const newBill = await newBillInstance.handleSumit();
+    const newBill = await newBillInstance.handleSubmit();
     expect(newBill.onNavigate).toBe("127.0.0.1:8080/#employee/bills")
   })
 })
@@ -95,6 +112,7 @@ describe('displayErrorMessage Unit Test Suites', () => {
 
   //+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
   it ('should create a modal of error', async () => {
+    const onNavigate = jest.fn(); // Create a mock function with jest.fn() method
     const newBillInstance = new NewBill({document, onNavigate, store, localStorage});
     const newBill = await newBillInstance.displayErrorMessage();
     expect(newBill.container).toContain(divModal);
