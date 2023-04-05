@@ -13,7 +13,8 @@ describe("Given I am connected as an employee", () => {
     test("Then I should see a form to complete", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
-      const formNewBill = document.getElementById('[data-testid="form-new-bill"]');
+      const formNewBill = document.querySelector('[data-testid="form-new-bill"]');
+      console.log(formNewBill);
       expect(formNewBill).toBeDefined();
       expect(formNewBill.childElementCount).toBe(2);
       const rowInForm = document.querySelectorAll('row');
@@ -45,7 +46,7 @@ describe('handleChangeFile Unit Test Suites', () => {
         files: [new File(['test file content'], 'test.txt', { type : 'text/plain' })]
       }
     });
-    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function to prevent the test to fail
+    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function. To prevent the test to fail
     await newBillInstance.handleChangeFile(event);
     expect(displayErrorMessage).toHaveBeenCalled();
   })
@@ -58,7 +59,7 @@ describe('handleChangeFile Unit Test Suites', () => {
         files: [new File(['test file content'], 'test.jpg', { type : 'image/jpeg' })]
       }
     });
-    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function to prevent the test to fail
+    const event = { preventDefault : jest.fn() }; // create a mock event object with a preventDefault function. To prevent the test to fail
     const newBill = await newBillInstance.handleChangeFile(event);
     expect(newBill.fileUrl).toBeDefined();
     expect(newBill.billId).toBeDefined();
