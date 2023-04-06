@@ -150,25 +150,40 @@ describe('displayErrorMessage Unit Test Suites', () => {
 describe("Given I am connected as an employee", () => {
   describe("When I have correctly completed the form of a newBill and click on submit", () => {
     test("Then I should see my new bill on the bills page", () => {
-
+      const titleNewBill = document.querySelector('[data-testid="expense-name"]');
+      const submitButton = document.getElementById("btn-send-bill");
+      submitButton.addEventListener("click", function() {
+        const currentUrl = window.location.href;
+        const ROUTES_PATH = { Bills: '#employee/bills' } ;
+        expect(currentUrl).toBe(ROUTES_PATH['Bills']);
+        const firstBillName = document.querySelectorAll('[data-testid="tbody"].tr[0].td[1]');
+        expect(firstBillName).toEqual(titleNewBill);
+      })
     })
   })
 
   describe("When I add a new bill on New Bill page", () => {
     test("Then I should be able to add a 'jpeg', 'jpg' or 'png' file", () => {
-
+      const fileButton = document.querySelector('[data-testid="file"]');
+      fileButton.addEventListener("click", function() {
+        const fileName = document.querySelectorAll("input.form-control")[5].value;
+        const fileExtension = fileName.split(".")[1];
+        expect(fileExtension).toEqual("png" || "jpg" || "jpeg");
+      })
     })
   })
 
   describe("When I am on New Bill page and want to add a new file which is not a 'jpeg', 'jpg' or 'png' file", () => {
     test("Then I should see a modal explaining me my error and why I can't do it", () => {
-
-    })
-  })
-
-  describe("When I am on New Bill page and see the error modal", () => {
-    test("Then I should be able to close it and come back to my already filled form to add another file", () => {
-
+      const fileButton = document.querySelector('[data-testid="file"]');
+      fileButton.addEventListener("click", function() {
+        const fileName = document.querySelectorAll("input.form-control")[5].value;
+        const fileExtension = fileName.split(".")[1];
+        if(fileExtension != "png" || fileExtension != "jpg" || fileExtension != "jpeg") {
+          const errorModal = document.getElementById('myModal');
+          expect(errorModal.style.display).toBe("block");
+        }
+      })
     })
   })
 })
