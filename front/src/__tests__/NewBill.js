@@ -147,27 +147,15 @@ describe('displayErrorMessage Unit Test Suites', () => {
 
 //----------------------------------------Integration test Containers/Bills----------------------------------------
 
-//+++++++++++++++++++++++++++++++++++++A REVOIR+++++++++++++++++++++++++++++++++++++
-
 describe("Given I am connected as an employee", () => {
-  describe("When I am on New Bill page", () => {
-    test("Then I should see a form to complete", () => {
-
-    })
-
-    test("Then I should be able to add a new file", () => {
-
-    })
-  })
-
-  describe("When I have completed the form of a newBill and click on submit", () => {
+  describe("When I have correctly completed the form of a newBill and click on submit", () => {
     test("Then I should see my new bill on the bills page", () => {
 
     })
   })
 
   describe("When I add a new bill on New Bill page", () => {
-    test("Then I should only be able to add 'jpeg', 'jpg' or 'png' files", () => {
+    test("Then I should be able to add a 'jpeg', 'jpg' or 'png' file", () => {
 
     })
   })
@@ -179,7 +167,7 @@ describe("Given I am connected as an employee", () => {
   })
 
   describe("When I am on New Bill page and see the error modal", () => {
-    test("Then I should be able to close it", () => {
+    test("Then I should be able to close it and come back to my already filled form to add another file", () => {
 
     })
   })
