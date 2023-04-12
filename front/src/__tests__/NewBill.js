@@ -7,6 +7,8 @@ import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import { fireEvent } from '@testing-library/dom'
 import '@testing-library/jest-dom/extend-expect'
+import request from 'supertest'
+import app from '../app'
 
 
 describe("Given I am connected as an employee", () => {
@@ -183,6 +185,86 @@ describe("Given I am connected as an employee", () => {
           const errorModal = document.getElementById('myModal');
           expect(errorModal.style.display).toBe("block");
         }
+      })
+    })
+  })
+})
+
+//----------------------------------------Integration test POST----------------------------------------
+
+describe("Given I am connected as an Employee", () => {
+  describe("When I correctly complete the form of a newBill and click on submit", () => {
+    test("Then I should change webpage and see my new bill on the bills page", async () => {
+      const data = {
+        type: document.querySelector('[data-testid="expense-type"]'),
+        name: document.querySelector('[data-testid="expense-name"]'),
+        date: document.querySelector('[data-testid="datepicker"]'),
+        amount: document.querySelector('[data-testid="amount"]'),
+        vat: document.querySelector('[data-testid="vat"]'),
+        pct: document.querySelector('[data-testid="pct"]'),
+        commentary: document.querySelector('[data-testid="commentary"]'),
+        file: document.querySelector('[data-testid="file"]')
+      }
+
+      data.type.value = "Transports";
+      data.name.value = "Vol CDG-YUL";
+      data.date.value = "06/19/2020";
+      data.amount.value = "500";
+      data.vat.value = "70";
+      data.pct.value = "20";
+      data.commentary.value = "Vive l'été au Canada";
+      data.file.value = "erable.jpg";
+
+      const response = await request(app)
+        .post('/newBill')
+        .send(data)
+
+      const submitButton = document.getElementById("btn-send-bill");
+      submitButton.addEventListener("click", function() {
+        const currentUrl = window.location.href;
+        const ROUTES_PATH = { Bills: '#employee/bills' } ;
+        expect(currentUrl).toBe(ROUTES_PATH['Bills']);
+        const firstBillName = document.querySelectorAll('[data-testid="tbody"].tr[0].td[1]');
+        expect(firstBillName).toEqual(data.name.value);
+        expect(response.status).toBe(200)
+      })
+    })
+  })
+
+  describe("When an error occurs on API", () => {
+    test("Then I send a newBill to API and fails with 404 message error", async () => {
+      const response = await request(app).post('/newBills')
+      expect(response.status).toBe(404)
+    })
+
+    test("Then I send invalid data to API and fails with 500 message error", async () => {
+      const data = {
+        type: document.querySelector('[data-testid="expense-type"]'),
+        name: document.querySelector('[data-testid="expense-name"]'),
+        date: document.querySelector('[data-testid="datepicker"]'),
+        amount: document.querySelector('[data-testid="amount"]'),
+        vat: document.querySelector('[data-testid="vat"]'),
+        pct: document.querySelector('[data-testid="pct"]'),
+        commentary: document.querySelector('[data-testid="commentary"]'),
+        file: document.querySelector('[data-testid="file"]')
+      }
+
+      data.type.value = "333";
+      data.name.value = "333";
+      data.date.value = "333";
+      data.amount.value = "333";
+      data.vat.value = "70";
+      data.pct.value = "20";
+      data.commentary.value = "333";
+      data.file.value = "erable.webp";
+
+      const response = await request(app)
+        .post('/newBill')
+        .send(data)
+
+      const submitButton = document.getElementById("btn-send-bill");
+      submitButton.addEventListener("click", function() {
+        expect(response.status).toBe(500)
       })
     })
   })
