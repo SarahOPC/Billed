@@ -17,7 +17,16 @@
       "!**/external/**",
       "!**/fixtures/**",
       "!**/lcov-report/**"
-    ]
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.js?$": "babel-jest",
+      "^.+\\.js$": "jest-esm-transformer"
+    },
+    "moduleNameMapper": {
+      "^uuid$": "<rootDir>/node_modules/uuid/dist/esm-browser/index.js"
+    },
+    "transformIgnorePatterns": []
   },
   "type": "module",
   "dependencies": {
