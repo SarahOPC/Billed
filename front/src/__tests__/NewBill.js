@@ -201,20 +201,17 @@ describe("Given I am connected as an employee", () => {
 
 describe("Given I am connected as an Employee", () => {
 
-  beforeEach(() => {
-    Object.defineProperty(
-      window,
-      'localStorage',
-      { value: localStorageMock }
-    );
+  beforeEach(async () => {
+    // User created for testing
     const user = { 
       "type":"Employee",
       "email":"employee@test.tld",
       "password":"employee",
       "status":"connected"
     };
-    window.localStorage.setItem('user', JSON.stringify(user));
-  });
+    const response = await request(app)
+      .post('/login', user)
+  })
 
   describe("When I correctly complete the form of a newBill and click on submit", () => {
     test("Then I should change webpage and see my new bill on the bills page", async () => {
@@ -236,12 +233,8 @@ describe("Given I am connected as an Employee", () => {
         }
       }
 
-      const user = JSON.parse(window.localStorage.getItem("user"));
       const response = await request(app)
-      console.log(user)
-      .post('/bills')
-      // We send in only one object user and date as request with the send method of supertest (only take one parameter)
-      .send({user: user, ...data})
+      .post('/bills', data)
               
       expect(response.status).toBe(200)
 
@@ -255,11 +248,9 @@ describe("Given I am connected as an Employee", () => {
 
   describe("When an error occurs on API", () => {
     test("Then I send a newBill to API and fails with 404 message error", async () => {
-      const user = JSON.parse(window.localStorage.getItem("user"));
       const response = await request(app)
       .post('/bill')
-      .send(user)
-      
+
       expect(response.status).toBe(404)
     })
 
@@ -282,12 +273,9 @@ describe("Given I am connected as an Employee", () => {
         }
       }
 
-      const user = JSON.parse(window.localStorage.getItem("user"));
       const response = await request(app)
-      console.log(user)
-      .post('/bills')
-      // We send in only one object user and date as request with the send method of supertest (only take one parameter)
-      .send({user: user, ...data})
+      .post('/bills', data)
+
       expect(response.status).toBe(500)
     })
   })
