@@ -9,6 +9,8 @@ import { fireEvent } from '@testing-library/dom'
 import '@testing-library/jest-dom/extend-expect'
 import request from 'supertest'
 import app from '../../../back/app.js'
+import {localStorageMock} from "../__mocks__/localStorage.js";
+
 
 
 describe("Given I am connected as an employee", () => {
@@ -51,7 +53,12 @@ const store = {
 describe('handleChangeFile Unit Test Suites', () => {
 
   beforeEach(() => {
-    const user = { "type":"Employee", "email":"employee@test.tld", "password":"employee", "status":"connected" };
+    const user = { 
+      "type":"Employee",
+      "email":"employee@test.tld",
+      "password":"employee",
+      "status":"connected"
+    };
     localStorage.setItem("user", JSON.stringify(user));
   })
   
@@ -193,6 +200,22 @@ describe("Given I am connected as an employee", () => {
 //----------------------------------------Integration test POST----------------------------------------
 
 describe("Given I am connected as an Employee", () => {
+
+  beforeEach(() => {
+    Object.defineProperty(
+      window,
+      'localStorage',
+      { value: localStorageMock }
+    );
+    const user = { 
+      "type":"Employee",
+      "email":"employee@test.tld",
+      "password":"employee",
+      "status":"connected"
+    };
+    window.localStorage.setItem('user', JSON.stringify(user));
+  });
+
   describe("When I correctly complete the form of a newBill and click on submit", () => {
     test("Then I should change webpage and see my new bill on the bills page", async () => {
       const data = {
@@ -204,13 +227,22 @@ describe("Given I am connected as an Employee", () => {
         vat: "70",
         pct: "20",
         commentary: "Vive l'été au Canada",
-        file: "erable.jpg"
+        commentAdmin: "ok",
+        status: "pending",
+        file: {
+          MimeType: 'image/jpg',
+          fileName: "erable.jpg",
+          path: "../assets/images/erable.jpg"
+        }
       }
 
+      const user = JSON.parse(window.localStorage.getItem("user"));
       const response = await request(app)
-        .post('/newBill')
-        .send(data)
-        
+      console.log(user)
+      .post('/bills')
+      // We send in only one object user and date as request with the send method of supertest (only take one parameter)
+      .send({user: user, ...data})
+              
       expect(response.status).toBe(200)
 
       const billsResponse = await request(app).get('/employee/bills')
@@ -223,7 +255,11 @@ describe("Given I am connected as an Employee", () => {
 
   describe("When an error occurs on API", () => {
     test("Then I send a newBill to API and fails with 404 message error", async () => {
-      const response = await request(app).post('/newBills')
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      const response = await request(app)
+      .post('/bill')
+      .send(user)
+      
       expect(response.status).toBe(404)
     })
 
@@ -237,13 +273,22 @@ describe("Given I am connected as an Employee", () => {
         vat: "333",
         pct: "333",
         commentary: "333",
-        file: "erable.webp"
+        commentAdmin: "ok",
+        status: "pending",
+        file: {
+          MimeType: 'image/jpg',
+          fileName: "erable.jpg",
+          path: "../assets/images/erable.jpg"
+        }
       }
 
+      const user = JSON.parse(window.localStorage.getItem("user"));
       const response = await request(app)
-        .post('/newBill')
-        .send(data)
-        expect(response.status).toBe(500)
+      console.log(user)
+      .post('/bills')
+      // We send in only one object user and date as request with the send method of supertest (only take one parameter)
+      .send({user: user, ...data})
+      expect(response.status).toBe(500)
     })
   })
 })
