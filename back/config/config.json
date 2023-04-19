@@ -5,14 +5,14 @@
     "database": "database_development",
     "host": "127.0.0.1",
     "dialect": "sqlite",
-    "storage": "./database_dev.sqlite"
+    "storage": "C:/Users/Richa/Desktop/OPC/Ft JS React/P9_Raguin_Sarah/Débuggez_et_testez_un_SaaS_RH_raguin_sarah/bill-app/back/database_dev.sqlite"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "dialect": "sqlite",
-    "storage": "./database_test.sqlite"
+    "storage": "C:/Users/Richa/Desktop/OPC/Ft JS React/P9_Raguin_Sarah/Débuggez_et_testez_un_SaaS_RH_raguin_sarah/bill-app/back/database_dev.sqlite"
   },
   "production": {
     "username": "root",

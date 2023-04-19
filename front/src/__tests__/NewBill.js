@@ -2,15 +2,19 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import { fireEvent } from '@testing-library/dom'
 import '@testing-library/jest-dom/extend-expect'
 import request from 'supertest'
 import app from '../../../back/app.js'
-import {localStorageMock} from "../__mocks__/localStorage.js";
+import path from 'path'
+import jwt from "../../../back/services/jwt.js"
 
+const jwtValue = jwt.encrypt({
+    userId: 1,
+    email: "john-doe@domain.tld"
+});
 
 
 describe("Given I am connected as an employee", () => {
@@ -38,7 +42,7 @@ describe("Given I am connected as an employee", () => {
 
 //----------------------------------------Unit test Containers/NewBill----------------------------------------
 
-// Create a constante store with mocked functions returning a resolved Promise for them to "successful"
+// Create a constante store with mocked functions returning a resolved Promise for them to be "successful"
 const store = {
   bills: jest.fn(() => ({
     create: jest.fn(() => Promise.resolve({ fileUrl: 'http://test.com', key: '12345'})),
@@ -201,41 +205,43 @@ describe("Given I am connected as an employee", () => {
 
 describe("Given I am connected as an Employee", () => {
 
-  beforeEach(async () => {
-    // User created for testing
-    const user = { 
-      "type":"Employee",
-      "email":"employee@test.tld",
-      "password":"employee",
-      "status":"connected"
-    };
-    const response = await request(app)
-      .post('/login', user)
-  })
+  let token;
 
-  describe("When I correctly complete the form of a newBill and click on submit", () => {
-    test("Then I should change webpage and see my new bill on the bills page", async () => {
+  beforeEach(async () => {
+    const response = await request(app)
+      .post("/auth/login")
+      .send({ email: "employee@test.tld", password: "employee" })
+      .set("Accept", "application/json");
+
+      token = response.body.jwt;
+      return; // to be sure the beforeEach is done before beginning the tests themselves
+    })
+    
+    describe("When I correctly complete the form of a newBill and click on submit", () => {
+      test("Then I should change webpage and see my new bill on the bills page", async () => {
       const data = {
         // Simulate HTTP requests using supertest
         type: "Transports",
         name: "Vol CDG-YUL",
         date: "06/19/2020",
-        amount: "500",
+        amount: 500,
         vat: "70",
         pct: "20",
         commentary: "Vive l'été au Canada",
         commentAdmin: "ok",
         status: "pending",
         file: {
-          MimeType: 'image/jpg',
-          fileName: "erable.jpg",
-          path: "../assets/images/erable.jpg"
+          originalname: "erable.jpg",
+          path: "C:/Users/Richa/Desktop/OPC/Ft JS React/P9_Raguin_Sarah/Débuggez_et_testez_un_SaaS_RH_raguin_sarah/bill-app/front/src/assets/images/erable.jpg"
         }
       }
 
       const response = await request(app)
-      .post('/bills', data)
-              
+      .post('/bills')
+      .set('Authorization', `Bearer ${token}`)
+      .send(data)
+      
+      console.log(response)
       expect(response.status).toBe(200)
 
       const billsResponse = await request(app).get('/employee/bills')
@@ -250,6 +256,7 @@ describe("Given I am connected as an Employee", () => {
     test("Then I send a newBill to API and fails with 404 message error", async () => {
       const response = await request(app)
       .post('/bill')
+      .set('Authorization', `Bearer ${token}`)
 
       expect(response.status).toBe(404)
     })
@@ -274,7 +281,9 @@ describe("Given I am connected as an Employee", () => {
       }
 
       const response = await request(app)
-      .post('/bills', data)
+      .post('/bills')
+      .set('Authorization', `Bearer ${token}`)
+      .send(data)
 
       expect(response.status).toBe(500)
     })
