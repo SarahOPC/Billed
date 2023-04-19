@@ -239,13 +239,24 @@ describe("Given I am connected as an Employee", () => {
       const response = await request(app)
       .post('/bills')
       .set('Authorization', `Bearer ${token}`)
-      .send(data)
+      .attach('file', data.file.path)
+      .field('name', data.name)
+      .field('type', data.type)
+      .field('date', data.date)
+      .field('amount', data.amount)
+      .field('vat', data.vat)
+      .field('pct', data.pct)
+      .field('commentary', data.commentary)
+      .field('commentAdmin', data.commentAdmin)
+      .field('status', data.status);
       
-      console.log(response)
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(201)
 
-      const billsResponse = await request(app).get('/employee/bills')
-      expect(billsResponse.status).toBe(200)
+      const billsResponse = await request(app)
+      console.log(jwtValue)
+      .set('Authorization', `Bearer ${jwtValue}`)
+      .get('/bills')
+      expect(billsResponse.status).toBe(201)
 
       const newBills = billsResponse.body
       expect(newBills).toContain(data)
