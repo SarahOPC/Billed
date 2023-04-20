@@ -210,17 +210,17 @@ describe("Given I am connected as an Employee", () => {
     })
     
      describe("When I correctly complete the form of a newBill and click on submit", () => {
-      test("Then I should change webpage and see my new bill on the bills page", async () => {
+      test("Then it is saved in the database", async () => {
       const data = {
         // Simulate HTTP requests using supertest
         type: "Transports",
         name: "Vol CDG-YUL",
         date: "06/19/2020",
         amount: 500,
-        vat: "70",
-        pct: "20",
+        vat: 70,
+        pct: 20,
         commentary: "Vive l'été au Canada",
-        commentAdmin: "ok",
+        commentAdmin: "",
         status: "pending",
         file: {
           originalname: "erable.jpg",
@@ -232,6 +232,7 @@ describe("Given I am connected as an Employee", () => {
       .post('/bills')
       .set('Authorization', `Bearer ${token}`)
       .attach('file', data.file.path)
+      .field('email', 'employee@test.tld')
       .field('name', data.name)
       .field('type', data.type)
       .field('date', data.date)
@@ -248,16 +249,10 @@ describe("Given I am connected as an Employee", () => {
       .get('/bills')
       .set('Authorization', `Bearer ${token}`)
       expect(billsResponse.status).toBe(200)
-
-      /*const newBills = billsResponse.body
-      const lastBillEntered = newBills[newBills.length - 1];
-      console.log(lastBillEntered.amount)
-      console.log(data.amount)
-      expect(lastBillEntered).toContain(data)*/
       })
     }) 
 
-  /* describe("When an error occurs on API", () => {
+  describe("When an error occurs on API", () => {
     test("Then I send a newBill to API and fails with 404 message error", async () => {
       const response = await request(app)
       .post('/bill')
@@ -272,11 +267,11 @@ describe("Given I am connected as an Employee", () => {
         type: "333",
         name: "333",
         date: "333",
-        amount: "333",
-        vat: "333",
-        pct: "333",
+        amount: 333,
+        vat: 333,
+        pct: 333,
         commentary: "333",
-        commentAdmin: "ok",
+        commentAdmin: "",
         status: "pending",
         file: {
           MimeType: 'image/jpg',
@@ -288,9 +283,9 @@ describe("Given I am connected as an Employee", () => {
       const response = await request(app)
       .post('/bills')
       .set('Authorization', `Bearer ${token}`)
-      .send(data)
+      .send(data) // Bad format to send data to database
 
       expect(response.status).toBe(500)
     })
-  }) */
+  })
 })
