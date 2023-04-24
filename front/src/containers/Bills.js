@@ -2,7 +2,7 @@ import { ROUTES_PATH } from '../constants/routes.js'
 import { formatDate, formatStatus, antiChrono } from "../app/format.js"
 import Logout from "./Logout.js"
 
-export default class {
+export default class MyClass {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate

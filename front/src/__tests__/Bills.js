@@ -7,7 +7,7 @@ import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-import {default as billFunctions} from "../containers/Bills.js";
+import MyClass, {default as billFunctions} from "../containers/Bills.js";
 import router from "../app/Router.js";
 import "@testing-library/jest-dom";
 import mockStore from "../__mocks__/store"
@@ -73,6 +73,12 @@ describe('handleClickNewBill Unit Test Suites', () => {
     const billsInstance = new billFunctions({document, onNavigate, localStorage});
     const currentUrl = "http://127.0.0.1:8080/#employee/bills";
     expect(billsInstance.handleClickNewBill.currentUrl).toBeFalsy;
+  })
+})
+
+describe('handleClickNewBill Unit Test Suites', () => {
+  it ('should call onNavigate with the correct argument', () => {
+    
   })
 })
 
