@@ -76,12 +76,6 @@ describe('handleClickNewBill Unit Test Suites', () => {
   })
 })
 
-describe('handleClickNewBill Unit Test Suites', () => {
-  it ('should call onNavigate with the correct argument', () => {
-    
-  })
-})
-
 /**
  * @ function handleClickIconEye
  */

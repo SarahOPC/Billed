@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
+import { screen, waitFor } from "@testing-library/dom"
 import Logout from "../containers/Logout.js"
 import '@testing-library/jest-dom/extend-expect'
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import DashboardUI from "../views/DashboardUI.js"
 import userEvent from '@testing-library/user-event'
 import { ROUTES } from "../constants/routes"
+import { async } from "regenerator-runtime"
 
 const bills = [{
   "id": "47qAXb6fIm2zOKkLzMro",
@@ -28,7 +29,7 @@ const bills = [{
 
 describe('Given I am connected', () => {
   describe('When I click on disconnect button', () => {
-    test(('Then, I should be sent to login page'), () => {
+    test(('Then, I should be sent to login page'), async () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
@@ -43,8 +44,8 @@ describe('Given I am connected', () => {
       const disco = screen.getByTestId('layout-disconnect')
       disco.addEventListener('click', handleClick)
       userEvent.click(disco)
-      expect(handleClick).toHaveBeenCalled()
-      expect(screen.getByText('Administration')).toBeTruthy()
+      await waitFor(() => expect(handleClick).toHaveBeenCalled())
+      await waitFor(() => expect(screen.getByText('Administration')).toBeTruthy())
     })
   })
 })
